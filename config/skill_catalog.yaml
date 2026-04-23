@@ -1,0 +1,11 @@
+build:
+  input_fps: 120
+  output_fps: 30
+  yaw_reference: null
+entries:
+  - name: sample_wave
+    motion: sample_wave
+    csv: motions/sample_wave.csv
+    kind: gesture
+    duration: 2.0
+    include: true

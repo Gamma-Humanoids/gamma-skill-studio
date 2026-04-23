@@ -1,0 +1,5 @@
+# Gamma Skill Studio development dependencies (Apache-2.0).
+-r requirements.txt
+pytest>=7.4,<9.0
+httpx>=0.25,<1.0
+ruff>=0.3,<1.0

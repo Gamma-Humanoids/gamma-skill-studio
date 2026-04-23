@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>G1 Motion Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="/ui/style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.160.0",
+      "three/examples/jsm/controls/OrbitControls.js": "https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js",
+      "three/examples/jsm/loaders/STLLoader.js": "https://esm.sh/three@0.160.0/examples/jsm/loaders/STLLoader.js",
+      "urdf-loader": "https://esm.sh/urdf-loader@0.12.1"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header id="app-header">
+    <span id="app-title">
+      <svg class="brand-mark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+      <span>Viewer G1</span>
+    </span>
+    <nav id="tab-bar">
+      <button class="tab-btn active" data-tab="preview">Preview</button>
+      <button class="tab-btn" data-tab="library">Library</button>
+    </nav>
+    <span id="status-bar">status: idle</span>
+  </header>
+
+  <div id="tab-preview" class="tab-panel active">
+    <div id="app-body">
+      <aside id="left-pane">
+        <section id="motion-list-section">
+          <div id="motion-list-header">Motions</div>
+          <button id="btn-open-from-path" type="button" title="Browse the filesystem for a CSV">Open from path...</button>
+          <button id="btn-upload-csv" type="button" title="Upload a CSV from this computer">Upload CSV...</button>
+          <div id="motion-list">
+            <div class="loading-msg">Loading...</div>
+          </div>
+        </section>
+      </aside>
+
+      <main id="main-area">
+        <div id="canvas-container">
+          <div id="loading-overlay">Loading URDF...</div>
+        </div>
+
+        <div id="timeline-bar">
+          <div id="transport-controls">
+            <button id="btn-prev" title="Step back (←)" aria-label="Step back"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg></button>
+            <button id="btn-play" title="Play/Pause (Space)" aria-label="Play/Pause"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg></button>
+            <button id="btn-next" title="Step forward (→)" aria-label="Step forward"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
+          </div>
+
+          <div id="slider-wrapper">
+            <div id="slider-track">
+              <input type="range" id="frame-slider" min="0" max="100" value="0" step="1" />
+              <div id="in-marker" class="marker" style="display:none;"></div>
+              <div id="out-marker" class="marker" style="display:none;"></div>
+            </div>
+            <div id="frame-display">0/0</div>
+          </div>
+
+          <div id="inout-controls">
+            <span id="in-display">IN: —</span>
+            <span id="out-display">OUT: —</span>
+            <label class="playback-label" for="speed-select">playback:</label>
+            <select id="speed-select" title="Preview playback speed (does NOT modify the clip)">
+              <option value="0.25">0.25x</option>
+              <option value="0.5">0.5x</option>
+              <option value="1" selected>1x</option>
+              <option value="2">2x</option>
+            </select>
+            <button id="btn-reset-inout" title="Reset IN/OUT (R)">Reset IN/OUT</button>
+          </div>
+        </div>
+
+        <section id="edit-panel">
+          <div id="edit-panel-header">Edit clip → motions/</div>
+          <div id="edit-hint" class="hint">Load a clip from the list above.</div>
+
+          <div class="edit-section-label">Trim / Cut (use IN/OUT markers)</div>
+          <button id="btn-trim" class="primary-btn" disabled>Trim — keep IN…OUT</button>
+          <button id="btn-cut" class="primary-btn" disabled>Cut — remove IN…OUT</button>
+
+          <div class="edit-section-label">Resample</div>
+          <div class="hint">
+            factor <b>&lt; 1</b> = slower / longer clip; <b>&gt; 1</b> = faster / shorter.<br/>
+            Not the same as <i>playback</i> speed below canvas (that's just preview).
+          </div>
+          <div class="speed-row">
+            <input type="number" id="speed-factor-input" value="0.8" step="0.1" min="0.1" max="10" title="&lt; 1 slower, &gt; 1 faster. 1.0 is rejected (no-op)." />
+            <button id="btn-speed" class="primary-btn" disabled>Apply resample</button>
+          </div>
+
+          <div class="edit-section-label">Pending edits</div>
+          <ol id="edit-ops-list" class="hint" style="margin:0 0 6px 18px;padding:0;">
+            <li class="hint" style="list-style:none;margin-left:-18px;">(none — click Trim, Cut or Apply resample to stage)</li>
+          </ol>
+          <button id="btn-reset-edits" disabled>Reset edits</button>
+
+          <div class="edit-section-label">Save</div>
+          <label for="output-name-input">output filename:</label>
+          <input type="text" id="output-name-input" placeholder="output.csv" />
+          <button id="btn-save-edits" class="primary-btn" disabled>Save as new CSV</button>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="tab-library" class="tab-panel">
+    <div id="library-root"></div>
+  </div>
+
+  <script type="module" src="/ui/main.js"></script>
+</body>
+</html>

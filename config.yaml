@@ -1,0 +1,17 @@
+# Gamma Skill Studio configuration.
+# Paths are resolved relative to the repo root, unless absolute.
+
+motions_dir: motions
+urdf_path: assets/simple_2dof/simple_2dof.urdf
+meshes_dir: assets/simple_2dof
+catalog_path: config/skill_catalog.yaml
+presets_path: config/adjustment_presets.yaml
+input_fps: 120
+
+build:
+  # Optional ProtoMotions compile plugin. Leave protomotions_dir null to disable.
+  # Clone https://github.com/NVlabs/ProtoMotions and point this at its root to
+  # enable CSV -> .motion -> compiled .pt output.
+  protomotions_dir: null
+  output_dir: build_out
+  compiled_name: motion_library.pt
