@@ -1,11 +1,6 @@
 <h1 align="center">Gamma Skill Studio</h1>
 
 <p align="center">
-  Preview any URDF. Edit motion clips in the browser. Manage a skill catalog.<br>
-  Compile reproducible motion libraries &mdash; all in one place.
-</p>
-
-<p align="center">
   <a href="https://github.com/Gamma-Humanoids/gamma-skill-studio/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Gamma-Humanoids/gamma-skill-studio/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue.svg"></a>
   <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-blue">
