@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <em>The open-source authoring studio behind the <strong>Gamma Skill Studio</strong> platform &mdash;<br>
+  <em>Gamma Skill Studio</strong> platform &mdash;<br>
   an embodiment-agnostic, no-code behavior OS for humanoid fleets, delivered as RaaS.</em>
 </p>
 
