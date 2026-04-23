@@ -24,21 +24,6 @@
 
 ---
 
-## Why Gamma Skill Studio?
-
-Authoring motion libraries for humanoid policies &mdash; mimic, tracking, sim-to-real
-whole-body control &mdash; is normally a grab-bag of ad-hoc notebooks, hardcoded paths,
-and one-off conversion scripts. Every lab re-invents the same CSV trimmer,
-the same URDF viewer, the same catalog format.
-
-**Gamma Skill Studio** is our answer: a single web studio with a reproducible config,
-visual preview, a typed catalog, and a plugin point for the compile step. Ship
-motion libraries, not scripts.
-
-It is the internal tool we use at Gamma Lab to iterate on our humanoid motion
-pipelines. We are open-sourcing it because the tooling is generic and the
-community deserves better than yet another pile of notebooks.
-
 ## The bigger picture &mdash; Gamma Skill Studio platform
 
 This repository is the **open-source authoring studio**: the slice of the
@@ -74,17 +59,8 @@ a **fixed-SLA uptime contract**.
 - **Deployment.** ONNX / TensorRT; **Jetson AGX Thor / T4000** at **FP4**,
   **sub-100 ms** policy step. OSMO for OTA, canary, and rollback.
 
-### What this solves
-
-- **Determinism** via behavior-tree compilation at author time.
-- **Embodiment abstraction** &mdash; the same skill runs on Unitree and LIMX
-  today, more platforms on the way.
-- **On-device inference** at under **18 % ARPU** via FP4 quantization and
-  policy distillation.
-
-This open-source repo covers the **motion authoring** layer. The full platform
-adds the agent toolkit, cross-embodiment runtime, safety envelope, fleet
-deployment, and SLA guarantees. Reach out via
+The full platform adds the agent toolkit, cross-embodiment runtime, safety
+envelope, fleet deployment, and SLA guarantees. Reach out via
 [gammalab.ae](https://gammalab.ae/Home) if you are interested in the managed
 service.
 
