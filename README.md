@@ -1,7 +1,6 @@
 <h1 align="center">Gamma Skill Studio</h1>
 
 <p align="center">
-  <strong>A web studio for authoring humanoid motion libraries.</strong><br>
   Preview any URDF. Edit motion clips in the browser. Manage a skill catalog.<br>
   Compile reproducible motion libraries &mdash; all in one place.
 </p>
