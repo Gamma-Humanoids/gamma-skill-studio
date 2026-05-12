@@ -1,8 +1,15 @@
 import pytest
 from viewer.server.adjustments import (
-    apply_adjustments, trim, cut, speed, align_yaw_rows, joint_offset,
+    ROOT_X,
+    ROOT_Y,
+    ROOT_YAW,
+    align_yaw_rows,
+    apply_adjustments,
+    cut,
+    joint_offset,
+    speed,
     stabilize,
-    ROOT_X, ROOT_Y, ROOT_YAW,
+    trim,
 )
 
 FIELDS = ["Frame", ROOT_X, ROOT_Y, ROOT_YAW, "waist_pitch_joint_dof"]

@@ -1,12 +1,11 @@
-from pathlib import Path
 import textwrap
+from pathlib import Path
+
 import pytest
 import yaml
-
 from viewer.server.catalog import (
     Catalog,
     Entry,
-    BuildSettings,
     load_catalog,
     save_catalog,
 )

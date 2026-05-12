@@ -3,7 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from viewer.server.editor import EditError, run_edit
 
 

@@ -9,7 +9,6 @@ from typing import Any, Literal, Optional
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-
 _NAME_RE = re.compile(r"^[A-Za-z0-9_]+$")
 
 Kind = Literal["gesture", "skill", "locomotion"]

@@ -4,20 +4,17 @@ These tests exercise the pure-Python parts (config writer, job queue, run
 orchestration with subprocess stubbed) — they do not require ProtoMotions to
 be installed. The plugin module is imported directly.
 """
-from pathlib import Path
 import time
 
 import pytest
 import yaml
-
+from viewer.server.catalog import BuildSettings, Catalog, Entry
 from viewer.server.plugins.protomotions_build import (
     BuildJob,
     BuildManager,
     _apply_one,
-    run_build,
     write_motion_config,
 )
-from viewer.server.catalog import BuildSettings, Catalog, Entry
 
 
 def make_cat(**overrides):
@@ -109,8 +106,8 @@ def test_apply_one_writes_transformed_csv(tmp_path, monkeypatch):
     )
 
     # Make _paths() return tmp_path as repo_root.
-    from viewer.server.config import ForgeConfig
     import viewer.server.plugins.protomotions_build as b
+    from viewer.server.config import ForgeConfig
     fake = ForgeConfig(
         repo_root=tmp_path,
         motions_dir=src_dir, urdf_path=tmp_path/"u.urdf", meshes_dir=tmp_path,
@@ -165,8 +162,8 @@ def test_run_build_error_path(monkeypatch, configured_build):
 
 def test_plugin_unavailable_without_config(forge_repo, monkeypatch):
     """When protomotions_dir is None, get_build_manager returns None."""
-    from viewer.server.config import ForgeConfig, get_config
     from viewer.server import plugins
+    from viewer.server.config import ForgeConfig, get_config
 
     base = get_config()
     disabled = ForgeConfig(

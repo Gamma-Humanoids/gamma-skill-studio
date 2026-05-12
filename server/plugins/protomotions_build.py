@@ -20,7 +20,6 @@ from pathlib import Path
 from typing import Optional
 
 import yaml
-
 from viewer.server.adjustments import apply_adjustments
 from viewer.server.catalog import Catalog, Entry
 from viewer.server.config import get_config

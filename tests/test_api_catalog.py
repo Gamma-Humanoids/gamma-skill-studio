@@ -1,9 +1,7 @@
 import shutil
-from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
-
 from viewer.server import app as app_module
 from viewer.server.config import get_config
 
@@ -16,7 +14,7 @@ def catalog_client(forge_repo, tmp_path, monkeypatch):
     shutil.copy2(cfg.catalog_path, tmp_cat)
 
     # Override get_config in the app module so catalog endpoints use tmp file.
-    orig_get_config = app_module.get_config
+    # monkeypatch handles restoration automatically when the test ends.
 
     class _Cfg:
         def __init__(self, base, cat_path):

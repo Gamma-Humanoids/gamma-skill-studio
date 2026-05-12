@@ -9,8 +9,6 @@ Plugins are discovered lazily so the core viewer works without any of them.
 """
 from __future__ import annotations
 
-from typing import Optional
-
 from viewer.server.config import get_config
 
 

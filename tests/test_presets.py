@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pytest
-
 from viewer.server.presets import delete_preset, load_presets, save_preset
 
 
