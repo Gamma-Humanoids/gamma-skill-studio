@@ -176,14 +176,6 @@ Logs stream live to the UI over SSE.
 Without the plugin, Gamma Skill Studio still works as a full-featured viewer,
 editor, and catalog manager &mdash; the build tab just stays greyed out.
 
-## Roadmap
-
-- [ ] Motion blending / transitions between catalog entries
-- [ ] DOF statistics and range-of-motion analytics
-- [ ] Tag-based catalog search and filtering
-- [ ] Public plugin API for non-ProtoMotions compile backends
-- [ ] Collaborative preset sync across team members
-
 Community PRs are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## About Gamma Lab
