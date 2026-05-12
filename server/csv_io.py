@@ -3,13 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 
 
-def parse_info(path: Path) -> dict:
-    """Return {"frames": int, "fps": 120, "duration_s": float, "columns": list[str]}.
+def parse_info(path: Path, fps: int = 120) -> dict:
+    """Return {"frames": int, "fps": int, "duration_s": float, "columns": list[str]}.
 
     frames = number of data rows (excluding header).
     Streams line-by-line; does not load the full file into memory.
     """
-    fps = 120
     columns: list[str] = []
     frames = 0
 

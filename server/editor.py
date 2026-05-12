@@ -13,7 +13,7 @@ from viewer.server.adjustments import apply_adjustments
 
 _VALID_OPS = {"trim", "cut", "speed"}
 
-FPS = 120
+FPS_DEFAULT = 120
 
 
 class EditError(Exception):
@@ -70,7 +70,13 @@ def _build_adjustments(op: str, params: dict) -> dict:
     raise EditError(f"Invalid op: {op!r}. Must be one of {sorted(_VALID_OPS)}")
 
 
-def run_edit(source_csv: Path, op: str, params: dict, dest_path: Path) -> Path:
+def run_edit(
+    source_csv: Path,
+    op: str,
+    params: dict,
+    dest_path: Path,
+    fps: int = FPS_DEFAULT,
+) -> Path:
     """Run a clip edit operation and write result to ``dest_path``.
 
     Args:
@@ -78,6 +84,7 @@ def run_edit(source_csv: Path, op: str, params: dict, dest_path: Path) -> Path:
         op: one of {"trim", "cut", "speed"}.
         params: op-specific parameters.
         dest_path: target path for the output CSV. Parent dir must exist.
+        fps: frames-per-second of the source CSV. Defaults to 120.
 
     Returns:
         ``dest_path`` on success.
@@ -99,7 +106,7 @@ def run_edit(source_csv: Path, op: str, params: dict, dest_path: Path) -> Path:
         raise EditError(f"failed to read {source_csv}: {exc}")
 
     try:
-        out_rows = apply_adjustments(rows, fieldnames, adjustments, fps=FPS)
+        out_rows = apply_adjustments(rows, fieldnames, adjustments, fps=fps)
     except ValueError as exc:
         raise EditError(f"{op} failed: {exc}")
 

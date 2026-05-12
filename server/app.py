@@ -9,7 +9,6 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, RedirectResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-
 from viewer.server.catalog import BuildSettings, Catalog, Entry, load_catalog, save_catalog
 from viewer.server.config import get_config
 from viewer.server.csv_io import parse_info
@@ -71,7 +70,7 @@ def motion_info(name: str) -> dict:
     path = _safe_resolve(cfg.motions_dir, name)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Motion not found")
-    info = parse_info(path)
+    info = parse_info(path, fps=cfg.input_fps)
     return {"name": name, **info}
 
 
@@ -120,11 +119,11 @@ def edit_motion(name: str, body: EditRequest) -> dict:
         raise HTTPException(status_code=409, detail=f"dest_path exists: {dest}")
 
     try:
-        out_path = run_edit(source_csv, body.op, body.params, dest)
+        out_path = run_edit(source_csv, body.op, body.params, dest, fps=cfg.input_fps)
     except EditError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 
-    info = parse_info(out_path)
+    info = parse_info(out_path, fps=cfg.input_fps)
     return {
         "dest_path": str(out_path),
         "frames": info["frames"],
@@ -163,7 +162,7 @@ def edit_chain(name: str, body: EditChainReq) -> Response:
             params = step.get("params", {}) or {}
             nxt = Path(tmpd) / f"step_{i}.csv"
             try:
-                run_edit(current, op, params, nxt)
+                run_edit(current, op, params, nxt, fps=cfg.input_fps)
             except EditError as exc:
                 raise HTTPException(400, f"step {i} ({op}): {exc}")
             current = nxt
@@ -179,7 +178,7 @@ def edit_chain(name: str, body: EditChainReq) -> Response:
             if dest.exists() and not body.overwrite:
                 raise HTTPException(409, f"dest_path exists: {dest}")
             shutil.copy2(current, dest)
-            info = parse_info(dest)
+            info = parse_info(dest, fps=cfg.input_fps)
             import json as _json
             return Response(
                 content=_json.dumps({

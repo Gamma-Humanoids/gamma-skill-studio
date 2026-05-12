@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- `parse_info` and `run_edit` now respect `config.yaml`'s `input_fps` instead of
+  hardcoding 120. Previously, motion `duration_s` and time-based edit ops were
+  computed against 120 FPS regardless of the configured rate.
+- Lint cleanup: sorted imports and removed unused imports / locals across
+  `server/` and `tests/` to keep `ruff check .` green on newer ruff releases.
+
+### Added
+- Python 3.13 to the CI matrix and pyproject classifiers.
+
 ## [0.1.0] - 2026-04-23
 
 Initial public release by Gamma Lab.
